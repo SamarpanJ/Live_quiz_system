@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: dark;
+  }
+
+  html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-bg text-ink antialiased;
+    background-image:
+      radial-gradient(60rem 60rem at 12% -10%, rgba(109, 99, 255, 0.16), transparent 55%),
+      radial-gradient(50rem 50rem at 100% 0%, rgba(34, 211, 238, 0.1), transparent 50%),
+      radial-gradient(40rem 40rem at 50% 120%, rgba(109, 99, 255, 0.08), transparent 55%);
+    background-attachment: fixed;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  ::selection {
+    background: rgba(109, 99, 255, 0.35);
+  }
+}
+
+@layer components {
+  .panel {
+    @apply rounded-2xl border border-border bg-bg-raised/70 backdrop-blur-xl shadow-card;
+  }
+
+  .panel-subtle {
+    @apply rounded-xl border border-border bg-bg-subtle/60;
+  }
+
+  .input-base {
+    @apply w-full rounded-xl border border-border bg-bg-subtle/70 px-4 py-2.5 text-ink
+      placeholder:text-ink-faint outline-none transition
+      focus:border-brand/60 focus:ring-4 focus:ring-brand/15;
+  }
+
+  .label-base {
+    @apply mb-1.5 block text-sm font-medium text-ink-dim;
+  }
+
+  /* faint dotted/grid backdrop helper */
+  .bg-grid {
+    background-size: 38px 38px;
+    @apply bg-grid-faint;
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black, transparent 75%);
+  }
+}
+
+/* thin custom scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.25) transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.22);
+  border-radius: 999px;
+}

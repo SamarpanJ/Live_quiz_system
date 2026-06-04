@@ -1,0 +1,69 @@
+// SQLite keeps the MVP zero-setup: the whole DB is a single local file.
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Quiz {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  joinCode    String   @unique
+  status      String   @default("draft") // draft | live | finished
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  questions    Question[]
+  participants Participant[]
+  answers      Answer[]
+}
+
+model Question {
+  id           String @id @default(cuid())
+  quizId       String
+  quiz         Quiz   @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  order        Int
+  text         String
+  options      String // JSON-encoded string[] (SQLite has no native arrays)
+  correctIndex Int
+  marks        Int    @default(1)
+  durationSec  Int    @default(30)
+  breakSec     Int    @default(5)
+
+  answers Answer[]
+
+  @@index([quizId])
+}
+
+model Participant {
+  id        String   @id @default(cuid())
+  quizId    String
+  quiz      Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  name      String
+  createdAt DateTime @default(now())
+
+  answers Answer[]
+
+  @@index([quizId])
+}
+
+model Answer {
+  id            String   @id @default(cuid())
+  quizId        String
+  quiz          Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  questionId    String
+  question      Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  participantId String
+  participant   Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  optionIndex   Int
+  isCorrect     Boolean
+  marksAwarded  Int      @default(0)
+  createdAt     DateTime @default(now())
+
+  @@unique([questionId, participantId])
+  @@index([quizId])
+}

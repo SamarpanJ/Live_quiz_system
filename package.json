@@ -1,0 +1,20 @@
+{
+  "name": "quiz-system",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w @quiz/web",
+    "build": "npm run build -w @quiz/web",
+    "start": "npm run start -w @quiz/web",
+    "db:push": "npm run db:push -w @quiz/web",
+    "db:seed": "npm run db:seed -w @quiz/web",
+    "db:studio": "npm run db:studio -w @quiz/web"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
