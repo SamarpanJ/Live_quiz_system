@@ -1,66 +1,56 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useActionState } from "react";
 import { Lock } from "lucide-react";
 import { Logo } from "@/components/Brand";
+import { AuthCard } from "@/components/layout/AuthCard";
+import { FloatingHeader } from "@/components/layout/FloatingHeader";
+import { PageBackdrop } from "@/components/layout/PageBackdrop";
 import { Button } from "@/components/ui/Button";
 import { Field, Input } from "@/components/ui/Input";
-import { api, apiError } from "@/lib/axios";
+import { adminLoginAction } from "./actions";
 
 export default function AdminLoginPage() {
-  const router = useRouter();
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-    try {
-      await api.post("/admin/login", { password });
-      router.push("/admin");
-      router.refresh();
-    } catch (err) {
-      setError(apiError(err, "Incorrect password."));
-      setLoading(false);
-    }
-  };
+  const [state, formAction, isPending] = useActionState(adminLoginAction, null);
 
   return (
-    <main className="relative grid min-h-screen place-items-center px-6">
-      <div className="pointer-events-none absolute inset-0 bg-grid" />
-      <div className="relative w-full max-w-sm">
-        <div className="mb-8 flex justify-center">
-          <Logo />
-        </div>
-        <div className="panel animate-fade-up p-7 sm:p-8">
-          <div className="grid size-11 place-items-center rounded-xl bg-brand/15 text-brand-soft">
-            <Lock className="size-5" />
-          </div>
-          <h1 className="mt-4 text-2xl font-semibold tracking-tight">Admin sign in</h1>
-          <p className="mt-1.5 text-sm text-ink-dim">
-            Enter the admin password to build and run quizzes.
-          </p>
+    <main className="page-shell flex min-h-screen flex-col">
+      <PageBackdrop />
+      <FloatingHeader innerClassName="max-w-sm justify-center">
+        <Logo />
+      </FloatingHeader>
 
-          <form onSubmit={onSubmit} className="mt-6 space-y-4">
-            <Field label="Password" error={error ?? undefined}>
-              <Input
-                type="password"
-                value={password}
-                onChange={(e) => {
-                  setPassword(e.target.value);
-                  setError(null);
-                }}
-                placeholder="••••••••"
-                autoFocus
-              />
-            </Field>
-            <Button type="submit" size="lg" className="w-full" loading={loading}>
-              Sign in
-            </Button>
-          </form>
+      <div className="relative flex flex-1 flex-col items-center justify-center px-5 pb-20 pt-2">
+        <div className="w-full max-w-sm animate-fade-up">
+          <AuthCard>
+            <div className="icon-badge size-12 rounded-2xl border-white/[0.12] bg-brand/10">
+              <Lock className="size-5" strokeWidth={1.75} />
+            </div>
+            <p className="mt-6 text-xs font-medium uppercase tracking-[0.2em] text-brand-soft">
+              Admin
+            </p>
+            <h1 className="heading-display mt-2 text-2xl sm:text-[1.75rem]">Admin sign in</h1>
+            <p className="mt-3 text-sm leading-relaxed text-ink-dim sm:text-[15px]">
+              Enter the admin password to build and run quizzes.
+            </p>
+
+            <form action={formAction} className="mt-8 space-y-6">
+              <Field label="Password" error={state?.error}>
+                <Input
+                  type="password"
+                  name="password"
+                  required
+                  placeholder="••••••••"
+                  autoComplete="current-password"
+                  autoFocus
+                  className="border-white/[0.14] bg-transparent focus:border-brand/45 focus:bg-brand/5"
+                />
+              </Field>
+              <Button type="submit" size="lg" className="w-full" loading={isPending}>
+                Sign in
+              </Button>
+            </form>
+          </AuthCard>
         </div>
       </div>
     </main>

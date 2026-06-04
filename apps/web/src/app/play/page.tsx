@@ -6,6 +6,8 @@ import { useEffect, useState } from "react";
 import { Loader2, WifiOff } from "lucide-react";
 import { PHASE } from "@quiz/shared";
 import { Logo } from "@/components/Brand";
+import { FloatingHeader } from "@/components/layout/FloatingHeader";
+import { PageBackdrop } from "@/components/layout/PageBackdrop";
 import { Button } from "@/components/ui/Button";
 import { useCountdown } from "@/hooks/useCountdown";
 import { usePlayRoom } from "@/features/play/usePlayRoom";
@@ -42,7 +44,7 @@ function PlayRoom({ code, name }: { code: string; name: string }) {
   if (status === "error") {
     return (
       <CenterMessage
-        icon={<WifiOff className="size-7 text-bad" />}
+        icon={<WifiOff className="size-8 text-bad" />}
         label={error ?? "Couldn't join the quiz."}
         action={
           <Link href="/join">
@@ -58,16 +60,14 @@ function PlayRoom({ code, name }: { code: string; name: string }) {
   }
 
   return (
-    <main className="relative min-h-screen">
-      <div className="pointer-events-none absolute inset-0 bg-grid" />
-      <header className="relative mx-auto flex max-w-3xl items-center justify-between px-6 py-5">
+    <main className="page-shell">
+      <PageBackdrop />
+      <FloatingHeader innerClassName="max-w-3xl">
         <Logo href={null} />
-        <span className="rounded-full border border-border bg-bg-raised/60 px-3 py-1 font-mono text-xs text-ink-dim">
-          {state.quiz.joinCode}
-        </span>
-      </header>
+        <span className="chip-mono py-1 text-[11px]">{state.quiz.joinCode}</span>
+      </FloatingHeader>
 
-      <section className="relative mx-auto flex max-w-3xl flex-col justify-center px-6 pb-16 pt-6">
+      <section className="play-main">
         {state.phase === PHASE.LOBBY && <LobbyView state={state} name={name} />}
         {state.phase === PHASE.QUESTION && state.question && (
           <QuestionView
@@ -100,12 +100,14 @@ function CenterMessage({
   action?: React.ReactNode;
 }) {
   return (
-    <main className="relative grid min-h-screen place-items-center px-6">
-      <div className="pointer-events-none absolute inset-0 bg-grid" />
-      <div className="relative flex flex-col items-center gap-4 text-center">
-        {spinner ? <Loader2 className="size-7 animate-spin text-brand-soft" /> : icon}
-        <p className="max-w-sm text-ink-dim">{label}</p>
-        {action}
+    <main className="page-shell">
+      <PageBackdrop />
+      <div className="page-center px-5">
+        <div className="surface-elevated flex max-w-sm flex-col items-center gap-5 p-8 text-center sm:p-10">
+          {spinner ? <Loader2 className="size-8 animate-spin text-brand-soft" /> : icon}
+          <p className="leading-relaxed text-ink-dim">{label}</p>
+          {action}
+        </div>
       </div>
     </main>
   );

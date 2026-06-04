@@ -92,18 +92,16 @@ export function QuizEditor({ quizId }: { quizId: string }) {
   const totalMarks = questions.reduce((s, q) => s + q.marks, 0);
 
   return (
-    <div className="mx-auto max-w-4xl px-6 py-10">
-      <div className="panel p-6">
+    <div className="relative mx-auto max-w-4xl px-5 py-8 pb-16 sm:px-6">
+      <div className="glass-card p-7 sm:p-8">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div className="min-w-0">
             <div className="flex items-center gap-3">
               <StatusBadge status={quiz.status} />
-              <span className="rounded-md border border-border bg-bg-subtle/60 px-2 py-0.5 font-mono text-xs text-ink-dim">
-                Join code: {quiz.joinCode}
-              </span>
+              <span className="chip-mono py-1 text-[11px]">Join code: {quiz.joinCode}</span>
             </div>
-            <h1 className="mt-3 truncate text-3xl font-semibold tracking-tight">{quiz.title}</h1>
-            {quiz.description && <p className="mt-1.5 text-ink-dim">{quiz.description}</p>}
+            <h1 className="heading-display mt-4 truncate text-3xl">{quiz.title}</h1>
+            {quiz.description && <p className="mt-1.5 text-caption">{quiz.description}</p>}
           </div>
           <div className="flex gap-2">
             <Button variant="secondary" size="sm" onClick={() => setDetailsOpen(true)}>
@@ -119,14 +117,14 @@ export function QuizEditor({ quizId }: { quizId: string }) {
           </div>
         </div>
 
-        <div className="mt-5 flex gap-5 border-t border-border pt-4 text-sm text-ink-dim">
+        <div className="divider-soft mt-6 flex gap-5 pt-5 text-sm text-ink-dim [&_span]:text-ink-dim">
           <span>{questions.length} questions</span>
           <span>{totalMarks} total marks</span>
         </div>
       </div>
 
-      <div className="mt-6 flex items-center justify-between">
-        <h2 className="text-lg font-medium">Questions</h2>
+      <div className="mt-8 flex items-center justify-between">
+        <h2 className="heading-display text-xl">Questions</h2>
         <Button onClick={() => setAddOpen(true)} size="sm">
           <Plus className="size-4" />
           Add question
@@ -134,8 +132,8 @@ export function QuizEditor({ quizId }: { quizId: string }) {
       </div>
 
       {questions.length === 0 ? (
-        <div className="panel mt-4 grid place-items-center py-14 text-center">
-          <div className="grid size-11 place-items-center rounded-xl bg-brand/12 text-brand-soft">
+        <div className="glass-card mt-6 grid place-items-center py-20 text-center">
+          <div className="icon-badge">
             <Sparkles className="size-5" />
           </div>
           <p className="mt-3 font-medium">No questions yet</p>
@@ -144,31 +142,36 @@ export function QuizEditor({ quizId }: { quizId: string }) {
       ) : (
         <ol className="mt-4 space-y-3">
           {questions.map((q, i) => (
-            <li key={q.id} className="panel p-5">
+            <li key={q.id} className="glass-card p-6 sm:p-7">
               <div className="flex items-start gap-4">
-                <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-bg-subtle/70 font-mono text-sm text-ink-dim">
+                <span className="surface-inset grid size-9 shrink-0 place-items-center font-mono text-sm font-semibold text-ink-dim">
                   {i + 1}
                 </span>
                 <div className="min-w-0 flex-1">
                   <p className="font-medium leading-snug">{q.text}</p>
-                  <div className="mt-3 grid gap-1.5 sm:grid-cols-2">
+                  <div className="mt-3 grid gap-2 sm:grid-cols-2">
                     {q.options.map((opt, oi) => (
                       <div
                         key={oi}
                         className={cn(
-                          "flex items-center gap-2 rounded-lg border px-2.5 py-1.5 text-sm",
-                          oi === q.correctIndex
-                            ? "border-good/50 bg-good/10 text-ink"
-                            : "border-border bg-bg-subtle/40 text-ink-dim",
+                          "option-slab",
+                          oi === q.correctIndex && "option-slab-correct",
                         )}
                       >
-                        <span className="font-mono text-xs text-ink-faint">{LETTERS[oi]}</span>
+                        <span
+                          className={cn(
+                            "option-slab-letter",
+                            oi === q.correctIndex && "option-slab-letter-correct",
+                          )}
+                        >
+                          {LETTERS[oi]}
+                        </span>
                         <span className="truncate">{opt}</span>
                       </div>
                     ))}
                   </div>
-                  <div className="mt-3 flex flex-wrap gap-3 text-xs text-ink-faint">
-                    <span className="rounded-md bg-bg-subtle/60 px-2 py-1">{q.marks} marks</span>
+                  <div className="mt-3 flex flex-wrap gap-3 text-xs text-ink-dim">
+                    <span className="chip py-1">{q.marks} marks</span>
                     <span className="flex items-center gap-1">
                       <Clock className="size-3.5" />
                       {q.durationSec}s to answer
@@ -192,7 +195,7 @@ export function QuizEditor({ quizId }: { quizId: string }) {
                   </IconBtn>
                 </div>
               </div>
-              <div className="mt-4 flex justify-end gap-2 border-t border-border pt-3">
+              <div className="divider-soft mt-5 flex justify-end gap-2 pt-4">
                 <Button variant="ghost" size="sm" onClick={() => setEditing(q)}>
                   <Pencil className="size-4" />
                   Edit
@@ -255,7 +258,7 @@ function IconBtn({
       onClick={onClick}
       disabled={disabled}
       aria-label={label}
-      className="grid size-7 place-items-center rounded-md text-ink-faint transition hover:bg-white/5 hover:text-ink disabled:opacity-30 disabled:hover:bg-transparent"
+      className="grid size-8 place-items-center rounded-xl text-ink-faint transition hover:bg-white/[0.06] hover:text-ink disabled:opacity-30 disabled:hover:bg-transparent"
     >
       {children}
     </button>

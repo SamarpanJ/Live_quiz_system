@@ -8,7 +8,7 @@ async function main() {
 
   const quiz = await prisma.quiz.create({
     data: {
-      title: "Sample Quiz — General Knowledge",
+      title: "Sample Quiz: General Knowledge",
       description: "A ready-made quiz so you can try a live run right away.",
       joinCode,
       questions: {

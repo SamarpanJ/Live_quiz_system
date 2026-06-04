@@ -1,80 +1,74 @@
 import Link from "next/link";
-import { ArrowRight, Gauge, ShieldCheck, Timer, Trophy } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Logo } from "@/components/Brand";
-
-const features = [
-  { icon: Timer, title: "One shared clock", desc: "The server drives the timer — every player counts down in perfect sync." },
-  { icon: ShieldCheck, title: "Answer-locked", desc: "Once submitted, answers can't change. Results reveal only when time's up." },
-  { icon: Gauge, title: "Auto-paced", desc: "Per-question timers and breaks run themselves once you hit start." },
-  { icon: Trophy, title: "Live standings", desc: "Scores and a leaderboard update the moment the timer ends." },
-];
+import { FloatingHeader } from "@/components/layout/FloatingHeader";
+import { PageBackdrop } from "@/components/layout/PageBackdrop";
+import { FeatureBento } from "@/components/landing/FeatureBento";
+import { HowItWorks } from "@/components/landing/HowItWorks";
+import { QuizPreview } from "@/components/landing/QuizPreview";
+import { Button } from "@/components/ui/Button";
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen overflow-hidden">
-      <div className="pointer-events-none absolute inset-0 bg-grid" />
+    <main className="page-shell">
+      <PageBackdrop />
 
-      <header className="relative mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
+      <FloatingHeader>
         <Logo />
-        <Link
-          href="/admin/login"
-          className="text-sm text-ink-dim transition hover:text-ink"
-        >
+        <Link href="/admin/login" className="nav-link">
           Admin sign in
         </Link>
-      </header>
+      </FloatingHeader>
 
-      <section className="relative mx-auto max-w-6xl px-6 pb-20 pt-10 sm:pt-20">
-        <div className="mx-auto max-w-3xl text-center animate-fade-up">
-          <span className="inline-flex items-center gap-2 rounded-full border border-border bg-bg-raised/60 px-3 py-1 text-xs text-ink-dim">
-            <span className="size-1.5 animate-pulse rounded-full bg-good" />
-            Real-time, synchronized quizzes
-          </span>
-          <h1 className="mt-6 text-balance text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl">
-            Run live quizzes where
-            <span className="bg-gradient-to-r from-brand-soft via-brand to-accent bg-clip-text text-transparent">
-              {" "}
-              everyone's on the same second.
-            </span>
-          </h1>
-          <p className="mx-auto mt-5 max-w-xl text-pretty text-lg text-ink-dim">
-            Build timed questions, hit start, and let the room move together —
-            question, then a short break, then the next. No one skips ahead.
-          </p>
+      <section className="relative mx-auto max-w-6xl px-5 pb-28 sm:px-6">
+        <div className="lg:grid lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:gap-14 xl:gap-20">
+          <div className="animate-fade-up">
+            <h1 className="heading-display max-w-xl text-[2.65rem] leading-[1.06] sm:text-5xl lg:text-[3.35rem] lg:leading-[1.05]">
+              The whole room{" "}
+              <span className="relative mt-1 block text-brand-ink">
+                on the same beat.
+                <span
+                  className="absolute -bottom-1 left-0 h-0.5 w-full rounded-full bg-brand/60"
+                  aria-hidden
+                />
+              </span>
+            </h1>
 
-          <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Link
-              href="/join"
-              className="group inline-flex h-12 items-center gap-2 rounded-xl bg-brand px-7 font-medium text-white shadow-glow transition hover:bg-brand-soft"
-            >
-              Join a quiz
-              <ArrowRight className="size-4 transition group-hover:translate-x-0.5" />
-            </Link>
-            <Link
-              href="/admin"
-              className="inline-flex h-12 items-center gap-2 rounded-xl border border-border bg-bg-raised/70 px-7 font-medium text-ink transition hover:bg-bg-raised"
-            >
-              Open admin panel
-            </Link>
+            <p className="mt-6 max-w-lg text-base leading-relaxed text-ink-dim sm:text-lg">
+              Host timed quizzes where everyone answers together, waits together, and sees results
+              together, no one races ahead.
+            </p>
+
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+              <Link href="/join">
+                <Button size="lg" className="w-full sm:w-auto sm:min-w-[210px]">
+                  Join a quiz
+                  <ArrowRight className="size-4" />
+                </Button>
+              </Link>
+              <Link href="/admin">
+                <Button variant="secondary" size="lg" className="w-full sm:w-auto sm:min-w-[210px]">
+                  Host a quiz
+                </Button>
+              </Link>
+            </div>
+
+            <HowItWorks />
+          </div>
+
+          <div className="relative mt-14 animate-fade-up lg:mt-0" style={{ animationDelay: "120ms" }}>
+            <QuizPreview />
           </div>
         </div>
 
-        <div className="mt-20 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {features.map((f, i) => (
-            <div
-              key={f.title}
-              className="panel animate-fade-up p-5"
-              style={{ animationDelay: `${i * 70}ms` }}
-            >
-              <div className="grid size-10 place-items-center rounded-lg bg-brand/12 text-brand-soft">
-                <f.icon className="size-5" />
-              </div>
-              <h3 className="mt-4 font-medium">{f.title}</h3>
-              <p className="mt-1.5 text-sm leading-relaxed text-ink-dim">{f.desc}</p>
-            </div>
-          ))}
-        </div>
+        <FeatureBento />
       </section>
+
+      <footer className="relative border-t border-white/[0.08] py-8">
+        <p className="text-center text-xs text-ink-faint">
+          Aurogurukul Quiz for classrooms, events, and team sessions.
+        </p>
+      </footer>
     </main>
   );
 }

@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "dev": "npm run dev -w @quiz/web",
+    "dev:clean": "npm run dev:clean -w @quiz/web",
     "build": "npm run build -w @quiz/web",
     "start": "npm run start -w @quiz/web",
     "db:push": "npm run db:push -w @quiz/web",

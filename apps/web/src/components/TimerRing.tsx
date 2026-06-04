@@ -28,8 +28,8 @@ export function TimerRing({
   const offset = c * (1 - frac);
 
   const low = remainingMs <= 5000 && remainingMs > 0;
-  const baseColor = tone === "accent" ? "#22d3ee" : "#6d63ff";
-  const color = low ? "#f43f5e" : baseColor;
+  const baseColor = tone === "accent" ? "#5ec8e8" : "#7c6cff";
+  const color = low ? "#fb7185" : baseColor;
 
   return (
     <div
@@ -42,7 +42,7 @@ export function TimerRing({
           cy={size / 2}
           r={r}
           fill="none"
-          stroke="rgba(148,163,184,0.14)"
+          stroke="rgba(255,255,255,0.08)"
           strokeWidth={stroke}
         />
         <circle

@@ -10,54 +10,73 @@ const config: Config = {
     extend: {
       colors: {
         bg: {
-          DEFAULT: "#070a13",
-          subtle: "#0c1120",
-          raised: "#11182b",
+          DEFAULT: "#000000",
+          subtle: "#0a0a0a",
+          raised: "#111111",
+          card: "#0d0d0d",
         },
-        border: "rgba(148,163,184,0.14)",
+        border: "rgba(255,255,255,0.1)",
         ink: {
-          DEFAULT: "#e7ecf6",
-          dim: "#9aa6bd",
-          faint: "#5d6982",
+          DEFAULT: "#fafafa",
+          dim: "#b8b8c3",
+          faint: "#9494a1",
         },
         brand: {
-          DEFAULT: "#6d63ff",
-          soft: "#8b84ff",
-          ink: "#c7c2ff",
+          DEFAULT: "#7c6cff",
+          soft: "#9b92ff",
+          ink: "#d4d0ff",
         },
-        accent: "#22d3ee",
-        good: "#22c55e",
-        bad: "#f43f5e",
-        warn: "#f59e0b",
+        accent: "#5ec8e8",
+        success: {
+          DEFAULT: "#d4b872",
+          soft: "#e8d49a",
+        },
+        good: "#d4b872",
+        bad: "#fb7185",
+        warn: "#e8b84a",
       },
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],
         mono: ["var(--font-mono)", "ui-monospace", "monospace"],
       },
+      borderRadius: {
+        "4xl": "2rem",
+        "5xl": "2.5rem",
+      },
       boxShadow: {
-        glow: "0 0 0 1px rgba(109,99,255,0.35), 0 0 40px -8px rgba(109,99,255,0.55)",
-        card: "0 1px 0 0 rgba(255,255,255,0.04) inset, 0 24px 60px -28px rgba(0,0,0,0.85)",
+        glow: "0 0 0 1px rgba(124,108,255,0.45), 0 0 32px -6px rgba(124,108,255,0.35)",
+        card: "0 0 0 1px rgba(255,255,255,0.06) inset, 0 1px 0 rgba(255,255,255,0.04) inset",
+        panel:
+          "0 0 0 1px rgba(255,255,255,0.08), 0 1px 0 rgba(255,255,255,0.05) inset, 0 24px 48px -20px rgba(0,0,0,0.9)",
+        "panel-lg":
+          "0 0 0 1px rgba(255,255,255,0.1), 0 1px 0 rgba(255,255,255,0.06) inset, 0 32px 64px -24px rgba(0,0,0,0.95)",
+        lift: "0 0 0 1px rgba(124,108,255,0.2), 0 16px 40px -12px rgba(124,108,255,0.2)",
       },
       backgroundImage: {
         "grid-faint":
-          "linear-gradient(to right, rgba(148,163,184,0.06) 1px, transparent 1px), linear-gradient(to bottom, rgba(148,163,184,0.06) 1px, transparent 1px)",
+          "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0)",
+        "surface-shine":
+          "linear-gradient(180deg, rgba(255,255,255,0.07) 0%, transparent 28%)",
+      },
+      backgroundSize: {
+        "grid-faint": "32px 32px",
       },
       keyframes: {
         "fade-up": {
-          "0%": { opacity: "0", transform: "translateY(8px)" },
+          "0%": { opacity: "0", transform: "translateY(10px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
         shimmer: {
           "100%": { transform: "translateX(100%)" },
         },
         "pulse-ring": {
-          "0%": { transform: "scale(0.95)", opacity: "0.6" },
-          "70%": { transform: "scale(1.15)", opacity: "0" },
+          "0%": { transform: "scale(0.95)", opacity: "0.5" },
+          "70%": { transform: "scale(1.12)", opacity: "0" },
           "100%": { opacity: "0" },
         },
       },
       animation: {
-        "fade-up": "fade-up 0.4s ease-out both",
+        "fade-up": "fade-up 0.45s cubic-bezier(0.22, 1, 0.36, 1) both",
         shimmer: "shimmer 1.5s infinite",
         "pulse-ring": "pulse-ring 1.6s cubic-bezier(0.4,0,0.6,1) infinite",
       },

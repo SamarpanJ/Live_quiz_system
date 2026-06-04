@@ -22,37 +22,27 @@ export function OptionButton({
   disabled,
   onClick,
 }: OptionButtonProps) {
-  const styles: Record<OptionVariant, string> = {
-    default:
-      "border-border bg-bg-subtle/60 hover:border-brand/50 hover:bg-brand/10 hover:-translate-y-0.5",
-    selected: "border-brand bg-brand/15 ring-2 ring-brand/40",
-    correct: "border-good/60 bg-good/15 ring-2 ring-good/40",
-    wrong: "border-bad/60 bg-bad/15 ring-2 ring-bad/40",
-    muted: "border-border bg-bg-subtle/40 opacity-55",
-  };
-  const badgeStyles: Record<OptionVariant, string> = {
-    default: "bg-bg-raised text-ink-dim",
-    selected: "bg-brand text-white",
-    correct: "bg-good text-white",
-    wrong: "bg-bad text-white",
-    muted: "bg-bg-raised text-ink-faint",
-  };
-
   return (
     <button
       type="button"
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        "group flex w-full items-center gap-4 rounded-xl border p-4 text-left transition-all duration-150",
-        "disabled:cursor-default focus:outline-none focus:ring-2 focus:ring-brand/30",
-        styles[variant],
+        "option-slab w-full py-3 transition-all duration-200 sm:py-3.5",
+        "disabled:cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/25 focus-visible:ring-offset-2 focus-visible:ring-offset-black",
+        variant === "default" && "hover:border-white/[0.14] hover:bg-white/[0.03]",
+        (variant === "selected" || variant === "correct") && "option-slab-correct ring-1 ring-brand/20",
+        variant === "wrong" &&
+          "border-bad/25 bg-bad/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]",
+        variant === "muted" && "opacity-45",
       )}
     >
       <span
         className={cn(
-          "grid size-9 shrink-0 place-items-center rounded-lg text-sm font-semibold transition",
-          badgeStyles[variant],
+          "option-slab-letter size-9 sm:size-10",
+          (variant === "selected" || variant === "correct") &&
+            "border-brand/40 bg-brand text-white",
+          variant === "wrong" && "border-bad/30 bg-bad/15 text-bad",
         )}
       >
         {variant === "correct" ? (
@@ -63,7 +53,7 @@ export function OptionButton({
           LETTERS[index] ?? index + 1
         )}
       </span>
-      <span className="text-[15px] font-medium text-ink">{text}</span>
+      <span className="text-[15px] font-medium leading-snug">{text}</span>
     </button>
   );
 }

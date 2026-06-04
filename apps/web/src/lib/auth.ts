@@ -40,10 +40,11 @@ export function verifySessionToken(token: string | undefined | null): boolean {
 }
 
 export function checkPassword(input: string): boolean {
-  const expected = process.env.ADMIN_PASSWORD || "admin123";
-  if (input.length !== expected.length) return false;
+  const expected = (process.env.ADMIN_PASSWORD || "admin123").trim();
+  const value = input.trim();
+  if (!value || value.length !== expected.length) return false;
   try {
-    return crypto.timingSafeEqual(Buffer.from(input), Buffer.from(expected));
+    return crypto.timingSafeEqual(Buffer.from(value), Buffer.from(expected));
   } catch {
     return false;
   }

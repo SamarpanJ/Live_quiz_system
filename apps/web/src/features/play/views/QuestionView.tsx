@@ -24,7 +24,7 @@ export function QuestionView({
     <div className="mx-auto w-full max-w-2xl animate-fade-up">
       <div className="mb-6 flex items-center justify-between">
         <div className="flex items-center gap-3 text-sm text-ink-dim">
-          <span className="rounded-full border border-border bg-bg-raised/60 px-3 py-1 font-mono">
+          <span className="chip-mono py-1">
             {q.index + 1} / {q.total}
           </span>
           <span className="text-ink-faint">
@@ -39,12 +39,12 @@ export function QuestionView({
         />
       </div>
 
-      <div className="panel p-6 sm:p-8">
-        <h2 className="text-balance text-2xl font-semibold leading-snug tracking-tight">
+      <div className="surface-elevated p-7 sm:p-9">
+        <h2 className="heading-display text-balance text-2xl leading-snug">
           {q.text}
         </h2>
 
-        <div className="mt-6 grid gap-3">
+        <div className="mt-7 grid gap-3.5">
           {q.options.map((opt, i) => {
             let variant: OptionVariant = "default";
             if (locked) variant = i === selected ? "selected" : "muted";
@@ -65,8 +65,8 @@ export function QuestionView({
       <div className="mt-5 flex items-center justify-center gap-2 text-sm text-ink-dim">
         {locked ? (
           <>
-            <Lock className="size-4 text-good" />
-            Answer locked — you&apos;ll see if it&apos;s right when the timer ends.
+            <Lock className="size-4 text-success" />
+            Answer locked. You&apos;ll see if it&apos;s right when the timer ends.
           </>
         ) : (
           <>Tap your answer. You can&apos;t change it once submitted.</>

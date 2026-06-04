@@ -6,14 +6,18 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-sans", display: "swa
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" });
 
 export const metadata: Metadata = {
-  title: "Pulse — Live Quiz",
+  title: "Aurogurukul Quiz",
   description: "Run synchronized, timed live quizzes. Everyone sees the same clock.",
+  icons: {
+    icon: "/aurogurukul-logo.png",
+    apple: "/aurogurukul-logo.png",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${mono.variable} dark`}>
-      <body className="min-h-full font-sans">{children}</body>
+      <body className="min-h-full font-sans text-[15px] leading-relaxed">{children}</body>
     </html>
   );
 }

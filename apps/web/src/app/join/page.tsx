@@ -4,8 +4,12 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { Logo } from "@/components/Brand";
+import { AuthCard } from "@/components/layout/AuthCard";
+import { FloatingHeader } from "@/components/layout/FloatingHeader";
+import { PageBackdrop } from "@/components/layout/PageBackdrop";
 import { Button } from "@/components/ui/Button";
 import { Field, Input } from "@/components/ui/Input";
+import { cn } from "@/lib/utils";
 
 export default function JoinPage() {
   const router = useRouter();
@@ -24,52 +28,62 @@ export default function JoinPage() {
   };
 
   return (
-    <main className="relative grid min-h-screen place-items-center px-6">
-      <div className="pointer-events-none absolute inset-0 bg-grid" />
-      <div className="relative w-full max-w-md">
-        <div className="mb-8 flex justify-center">
-          <Logo />
-        </div>
-        <div className="panel animate-fade-up p-7 sm:p-8">
-          <h1 className="text-2xl font-semibold tracking-tight">Join the quiz</h1>
-          <p className="mt-1.5 text-sm text-ink-dim">
-            Ask your host for the join code, then jump in.
-          </p>
+    <main className="page-shell flex min-h-screen flex-col">
+      <PageBackdrop />
+      <FloatingHeader innerClassName="max-w-md justify-center">
+        <Logo />
+      </FloatingHeader>
 
-          <form onSubmit={onSubmit} className="mt-6 space-y-4">
-            <Field label="Join code">
-              <Input
-                value={code}
-                onChange={(e) => {
-                  setCode(e.target.value.toUpperCase());
-                  setError(null);
-                }}
-                placeholder="e.g. K7P3Q"
-                autoCapitalize="characters"
-                autoComplete="off"
-                maxLength={8}
-                className="text-center font-mono text-2xl tracking-[0.4em]"
-              />
-            </Field>
-            <Field label="Your name">
-              <Input
-                value={name}
-                onChange={(e) => {
-                  setName(e.target.value);
-                  setError(null);
-                }}
-                placeholder="What should we call you?"
-                maxLength={40}
-              />
-            </Field>
+      <div className="relative flex flex-1 flex-col items-center justify-center px-5 pb-20 pt-2">
+        <div className="w-full max-w-md animate-fade-up">
+          <AuthCard>
+            <p className="text-xs font-medium uppercase tracking-[0.2em] text-brand-soft">
+              Player
+            </p>
+            <h1 className="heading-display mt-3 text-2xl sm:text-[1.75rem]">Join the quiz</h1>
+            <p className="mt-3 text-sm leading-relaxed text-ink-dim sm:text-[15px]">
+              Ask your host for the join code, then jump in.
+            </p>
 
-            {error && <p className="text-sm text-bad">{error}</p>}
+            <form onSubmit={onSubmit} className="mt-8 space-y-6">
+              <Field label="Join code">
+                <Input
+                  value={code}
+                  onChange={(e) => {
+                    setCode(e.target.value.toUpperCase());
+                    setError(null);
+                  }}
+                  placeholder="K7P3Q"
+                  autoCapitalize="characters"
+                  autoComplete="off"
+                  maxLength={8}
+                  className={cn(
+                    "border-white/[0.14] bg-transparent py-4 text-center font-mono text-2xl shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] focus:border-brand/45 focus:bg-brand/5",
+                    code ? "tracking-[0.32em]" : "tracking-normal placeholder:font-sans placeholder:text-base placeholder:tracking-normal",
+                  )}
+                />
+              </Field>
+              <Field label="Your name">
+                <Input
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                    setError(null);
+                  }}
+                  placeholder="What should we call you?"
+                  maxLength={40}
+                  className="border-white/[0.14] bg-transparent focus:border-brand/45 focus:bg-brand/5"
+                />
+              </Field>
 
-            <Button type="submit" size="lg" className="w-full">
-              Enter waiting room
-              <ArrowRight className="size-4" />
-            </Button>
-          </form>
+              {error && <p className="error-banner">{error}</p>}
+
+              <Button type="submit" size="lg" className="w-full">
+                Enter waiting room
+                <ArrowRight className="size-4" />
+              </Button>
+            </form>
+          </AuthCard>
         </div>
       </div>
     </main>

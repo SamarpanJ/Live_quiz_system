@@ -35,21 +35,25 @@ export function Modal({
           exit={{ opacity: 0 }}
         >
           <div
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            className="absolute inset-0 z-0 bg-black/80 backdrop-blur-md"
             onClick={onClose}
+            aria-hidden
           />
           <motion.div
             role="dialog"
             aria-modal="true"
-            className={`panel relative my-8 w-full ${size === "lg" ? "max-w-2xl" : "max-w-md"} p-6 sm:p-7`}
+            className={`glass-card relative z-10 my-8 w-full ${size === "lg" ? "max-w-2xl" : "max-w-md"} p-6 sm:rounded-[2rem] sm:p-8`}
             initial={{ opacity: 0, scale: 0.96, y: 8 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.97, y: 6 }}
             transition={{ duration: 0.18 }}
+            onClick={(e) => e.stopPropagation()}
           >
             <button
+              type="button"
               onClick={onClose}
-              className="absolute right-4 top-4 grid size-8 place-items-center rounded-lg text-ink-faint transition hover:bg-white/5 hover:text-ink"
+              className="absolute right-5 top-5 z-20 grid size-9 place-items-center rounded-full text-ink-faint transition hover:bg-white/[0.08] hover:text-ink"
+              aria-label="Close"
             >
               <X className="size-4" />
             </button>

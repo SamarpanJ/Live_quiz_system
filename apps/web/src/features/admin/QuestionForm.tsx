@@ -18,6 +18,13 @@ export interface QuestionValues {
 
 const LETTERS = ["A", "B", "C", "D", "E", "F"];
 
+/** Keeps numeric inputs as plain digit strings so typing never sticks on a leading 0. */
+function digitsOnly(raw: string): string {
+  if (raw === "") return "";
+  const n = parseInt(raw, 10);
+  return Number.isNaN(n) ? "" : String(n);
+}
+
 export function QuestionForm({
   initial,
   onSubmit,
@@ -32,9 +39,9 @@ export function QuestionForm({
   const [text, setText] = useState(initial?.text ?? "");
   const [options, setOptions] = useState<string[]>(initial?.options ?? ["", ""]);
   const [correctIndex, setCorrectIndex] = useState(initial?.correctIndex ?? 0);
-  const [marks, setMarks] = useState(initial?.marks ?? 10);
-  const [durationSec, setDurationSec] = useState(initial?.durationSec ?? 30);
-  const [breakSec, setBreakSec] = useState(initial?.breakSec ?? 5);
+  const [marks, setMarks] = useState(String(initial?.marks ?? 10));
+  const [durationSec, setDurationSec] = useState(String(initial?.durationSec ?? 30));
+  const [breakSec, setBreakSec] = useState(String(initial?.breakSec ?? 5));
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
@@ -54,7 +61,14 @@ export function QuestionForm({
     const cleaned = options.map((o) => o.trim());
     if (!text.trim()) return setError("Add the question text.");
     if (cleaned.some((o) => !o)) return setError("Every option needs text.");
-    if (durationSec < 3) return setError("Question time must be at least 3 seconds.");
+    const marksNum = parseInt(marks, 10);
+    const durationNum = parseInt(durationSec, 10);
+    const breakNum = parseInt(breakSec, 10);
+    if (marks === "" || Number.isNaN(marksNum)) return setError("Enter marks.");
+    if (durationSec === "" || Number.isNaN(durationNum) || durationNum < 3) {
+      return setError("Question time must be at least 3 seconds.");
+    }
+    if (breakSec === "" || Number.isNaN(breakNum)) return setError("Enter break time.");
     setSaving(true);
     setError(null);
     try {
@@ -62,9 +76,9 @@ export function QuestionForm({
         text: text.trim(),
         options: cleaned,
         correctIndex,
-        marks,
-        durationSec,
-        breakSec,
+        marks: marksNum,
+        durationSec: durationNum,
+        breakSec: breakNum,
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not save.");
@@ -89,21 +103,20 @@ export function QuestionForm({
           {options.map((opt, i) => {
             const isCorrect = i === correctIndex;
             return (
-              <div key={i} className="flex items-center gap-2">
+              <div key={i} className="flex min-w-0 items-center gap-2">
                 <button
                   type="button"
                   onClick={() => setCorrectIndex(i)}
                   className={cn(
-                    "grid size-9 shrink-0 place-items-center rounded-lg border text-sm font-semibold transition",
-                    isCorrect
-                      ? "border-good bg-good/20 text-good"
-                      : "border-border bg-bg-subtle/60 text-ink-dim hover:border-good/50",
+                    "option-slab-letter shrink-0 !size-10 text-sm font-semibold transition",
+                    isCorrect && "option-slab-letter-correct",
                   )}
                   title="Mark as correct answer"
                 >
                   {isCorrect ? <Check className="size-4" /> : LETTERS[i]}
                 </button>
                 <Input
+                  className="min-w-0 w-auto flex-1"
                   value={opt}
                   onChange={(e) => setOption(i, e.target.value)}
                   placeholder={`Option ${LETTERS[i]}`}
@@ -111,8 +124,12 @@ export function QuestionForm({
                 {options.length > 2 && (
                   <button
                     type="button"
-                    onClick={() => removeOption(i)}
-                    className="grid size-9 shrink-0 place-items-center rounded-lg text-ink-faint transition hover:bg-bad/10 hover:text-bad"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      removeOption(i);
+                    }}
+                    className="relative z-10 grid size-10 shrink-0 place-items-center rounded-xl text-ink-faint transition hover:bg-bad/10 hover:text-bad"
+                    aria-label={`Remove option ${LETTERS[i]}`}
                   >
                     <X className="size-4" />
                   </button>
@@ -138,24 +155,27 @@ export function QuestionForm({
           <Input
             type="number"
             min={0}
+            inputMode="numeric"
             value={marks}
-            onChange={(e) => setMarks(Number(e.target.value))}
+            onChange={(e) => setMarks(digitsOnly(e.target.value))}
           />
         </Field>
         <Field label="Time (sec)">
           <Input
             type="number"
             min={3}
+            inputMode="numeric"
             value={durationSec}
-            onChange={(e) => setDurationSec(Number(e.target.value))}
+            onChange={(e) => setDurationSec(digitsOnly(e.target.value))}
           />
         </Field>
         <Field label="Break after (sec)">
           <Input
             type="number"
             min={0}
+            inputMode="numeric"
             value={breakSec}
-            onChange={(e) => setBreakSec(Number(e.target.value))}
+            onChange={(e) => setBreakSec(digitsOnly(e.target.value))}
           />
         </Field>
       </div>
