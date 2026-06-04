@@ -25,10 +25,10 @@ export default function Home() {
           <div className="animate-fade-up">
             <h1 className="heading-display max-w-xl text-[2.65rem] leading-[1.06] sm:text-5xl lg:text-[3.35rem] lg:leading-[1.05]">
               The whole room{" "}
-              <span className="relative mt-1 block text-brand-ink">
+              <span className="relative mt-1 inline-block text-brand-ink">
                 on the same beat.
                 <span
-                  className="absolute -bottom-1 left-0 h-0.5 w-full rounded-full bg-brand/60"
+                  className="absolute -bottom-1 left-0 right-0 h-px rounded-full bg-gradient-to-r from-brand/80 via-brand/50 to-brand/20"
                   aria-hidden
                 />
               </span>

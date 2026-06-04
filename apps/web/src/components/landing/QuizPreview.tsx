@@ -5,48 +5,72 @@ const OPTIONS = [
   { letter: "D", text: "Saturn", state: "muted" as const },
 ];
 
+const STANDINGS = [
+  { name: "Rajesh", score: 120 },
+  { name: "Rohan", score: 105 },
+  { name: "Mira", score: 90 },
+];
+
+const TIMER_SIZE = 52;
+const TIMER_R = 22;
+
+function PreviewTimer() {
+  const c = 2 * Math.PI * TIMER_R;
+  const offset = c * 0.25;
+
+  return (
+    <div
+      className="relative grid shrink-0 place-items-center"
+      style={{ width: TIMER_SIZE, height: TIMER_SIZE }}
+      role="img"
+      aria-label="18 seconds remaining"
+    >
+      <svg
+        className="absolute inset-0 -rotate-90"
+        width={TIMER_SIZE}
+        height={TIMER_SIZE}
+        viewBox={`0 0 ${TIMER_SIZE} ${TIMER_SIZE}`}
+      >
+        <circle
+          cx={TIMER_SIZE / 2}
+          cy={TIMER_SIZE / 2}
+          r={TIMER_R}
+          fill="none"
+          stroke="rgba(255,255,255,0.1)"
+          strokeWidth="3"
+        />
+        <circle
+          cx={TIMER_SIZE / 2}
+          cy={TIMER_SIZE / 2}
+          r={TIMER_R}
+          fill="none"
+          stroke="#7c6cff"
+          strokeWidth="3"
+          strokeLinecap="round"
+          strokeDasharray={c}
+          strokeDashoffset={offset}
+        />
+      </svg>
+      <span className="relative font-mono text-[13px] font-semibold leading-none tabular-nums text-ink">
+        0:18
+      </span>
+    </div>
+  );
+}
+
 export function QuizPreview() {
   return (
     <div className="relative mx-auto w-full max-w-[420px] lg:max-w-none">
-      <div
-        className="pointer-events-none absolute -left-8 top-1/2 size-56 -translate-y-1/2 rounded-full border border-white/[0.06]"
-        aria-hidden
-      />
-
-      <div className="surface-elevated relative z-10 overflow-visible p-6 sm:p-7">
-        <div className="absolute -right-3 -top-3 z-20 grid size-[4.5rem] place-items-center rounded-full border border-white/[0.14] bg-white/[0.05] shadow-[inset_0_1px_0_rgba(255,255,255,0.1),0_0_24px_-4px_rgba(124,108,255,0.2)] backdrop-blur-md">
-          <span className="relative z-10 font-mono text-lg font-semibold tabular-nums text-ink">
-            0:18
-          </span>
-          <svg className="absolute inset-0 -rotate-90" viewBox="0 0 72 72" aria-hidden>
-            <circle
-              cx="36"
-              cy="36"
-              r="32"
-              fill="none"
-              stroke="rgba(255,255,255,0.08)"
-              strokeWidth="4"
-            />
-            <circle
-              cx="36"
-              cy="36"
-              r="32"
-              fill="none"
-              stroke="#7c6cff"
-              strokeWidth="4"
-              strokeLinecap="round"
-              strokeDasharray="201"
-              strokeDashoffset="48"
-            />
-          </svg>
-        </div>
-
-        <div className="relative z-10 flex flex-wrap items-center justify-between gap-2 pr-16">
-          <span className="chip-mono py-1 text-[11px]">K7P3Q</span>
-          <span className="chip border-accent/35 bg-accent/10 text-accent">
-            <span className="size-1.5 rounded-full bg-accent shadow-[0_0_8px_rgba(94,200,232,0.5)]" />
-            Live now
-          </span>
+      <div className="surface-elevated relative p-6 sm:p-7">
+        <div className="relative z-10 flex items-center justify-between gap-3">
+          <div className="flex min-w-0 flex-wrap items-center gap-2">
+            <span className="chip-mono py-1 text-[11px]">K7P3Q</span>
+            <span className="chip border-accent/35 bg-accent/10 text-accent">
+              <span className="size-1.5 rounded-full bg-accent shadow-[0_0_8px_rgba(94,200,232,0.5)]" />
+              Live now
+            </span>
+          </div>
+          <PreviewTimer />
         </div>
 
         <p className="relative z-10 mt-5 text-xs font-medium uppercase tracking-[0.2em] text-ink-faint">
@@ -72,23 +96,30 @@ export function QuizPreview() {
           ))}
         </ul>
 
-        <p className="relative z-10 mt-4 text-center text-xs text-ink-faint">
-          <span className="text-accent">●</span> 24 players · answers locked in
-        </p>
-      </div>
-
-      <div className="surface-subtle absolute -bottom-5 -left-4 z-20 hidden max-w-[11rem] px-4 py-3 sm:block">
-        <p className="text-[10px] font-medium uppercase tracking-wider text-ink-faint">Standings</p>
-        <ul className="mt-2 space-y-1.5 text-xs">
-          {["Rajesh", "Rohan", "Mira"].map((name, i) => (
-            <li key={name} className="flex justify-between gap-3 text-ink-dim">
-              <span>
-                <span className="font-mono text-ink-faint">{i + 1}.</span> {name}
-              </span>
-              <span className="font-mono font-semibold text-ink">{120 - i * 15}</span>
-            </li>
-          ))}
-        </ul>
+        <div className="divider-soft relative z-10 mt-5 border-t border-white/[0.08] pt-5">
+          <div className="grid gap-4 sm:grid-cols-[1fr_auto] sm:items-end">
+            <div>
+              <p className="text-[10px] font-medium uppercase tracking-wider text-ink-faint">
+                Standings
+              </p>
+              <ul className="mt-2 space-y-1.5 text-xs">
+                {STANDINGS.map((row, i) => (
+                  <li key={row.name} className="flex max-w-[12rem] justify-between gap-4 text-ink-dim">
+                    <span>
+                      <span className="font-mono text-ink-faint">{i + 1}.</span> {row.name}
+                    </span>
+                    <span className="font-mono font-semibold tabular-nums text-ink">
+                      {row.score}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <p className="text-xs leading-relaxed text-ink-faint sm:max-w-[9rem] sm:text-right">
+              <span className="text-accent">●</span> 24 players · answers locked in
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
